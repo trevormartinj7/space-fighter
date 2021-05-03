@@ -8,10 +8,7 @@ function App() {
       <div className="header">
         <Header/>
       </div>
-      <div className="body">
         <Grid/>
-      </div>
-      
     </div>
   );
 }

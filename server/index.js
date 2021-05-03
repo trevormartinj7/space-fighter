@@ -12,3 +12,4 @@ app.listen(PORT, () => console.log("Server is running on port " + PORT))
 app.get('/api/ships', shipControl.getShips);
 app.put('/api/ships/:id', shipControl.editShip)
 app.post('/api/ships', shipControl.addShip)
+app.delete('/api/ships/:id', shipControl.deleteShip)

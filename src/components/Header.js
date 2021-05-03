@@ -9,8 +9,10 @@ class Header extends Component{
 
 
         return(
-            <div>
-                "Header imported succesfully"
+            <div className="header">
+                <div></div>
+                <div className="center-title">Nautilus Space Fighter</div>
+                <div className="login">Login</div>
             </div>
             
         )
