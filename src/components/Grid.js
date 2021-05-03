@@ -15,8 +15,12 @@ class Grid extends Component{
             gridHeight: 30,
             gridWidth: 50,
             activeShipId: 0,
+            money: 0,
             gameOver: false,
-            score: 0
+            wave: 1,
+            friendId: 24,
+            enemyId: 74,
+            subwave: 1,
         }
 
 
@@ -108,7 +112,7 @@ class Grid extends Component{
                                                     Also needs to add an onlick to call range function*/}
                                             </div>
                                         )
-                                    } else if(ely > 70 && ely < 120){
+                                    } else if(ely > 70 && ely <= 99){
                                         //This elseif checks to see if the ID matches an enemy fighter
                                         //The onlick it outputs checks to see if a friendly fighter is in attack range
                                         return(
@@ -117,7 +121,7 @@ class Grid extends Component{
                                                 {/* Need to make axios call to display enemy health here */}
                                             </div>
                                         )
-                                    } else if (ely > 100 && ely < 150) {
+                                    } else if (ely > 99 && ely < 130) {
                                         //This occurs when an enemy ship is targetable. 
                                         return(
                                             <div className="targetable" onClick={() => {this.enemyInRange(ix, iy, ely)}}>
@@ -249,8 +253,6 @@ class Grid extends Component{
 
     cleanGrid(){
 
-        
-
         console.log("New turn happened")
         let grid = [...this.state.backgroundGrid]
 
@@ -277,12 +279,6 @@ class Grid extends Component{
             this.setState({backgroundGrid: grid})
 
 
-            //checking to see if an enemy ship has made it off the edge
-
-          
-
-
-            //I'm also changing the enemy ships positions here after having checked that they havent reached earth
             //underneath here, I call the edit function to update the move attribute
             //so that it's reset for the next turn
 
@@ -293,54 +289,97 @@ class Grid extends Component{
                 let posX = shipArray[i].posX;
                 let id = shipArray[i].id;
                 console.log("The for loop ran at least once insine new turn")
-                
-                if(shipArray[i].id < 70){
-                    axios.put(`api/ships/${id}`, {posY, posX, moved})
-                    .then((res) => {
-                        // grid[posY][posX] = id;
-                        // this.setState({backgroundGrid: grid});
-                        //and this one
-                        // this.displayBoard();
-                        console.log("REEEEEE You should always see false in this result: " + res);
-                    })
-                    .catch((err) => {console.log(err)})
-                } else {
-                    let goingDown = (Math.floor(Math.random() * ((5-1) + 1)))
-                    posY += goingDown;
-                    axios.put(`api/ships/${id}`, {posY, posX, moved})
-                    .then((res) => {
-                        // grid[posY][posX] = id;
-                        // this.setState({backgroundGrid: grid});
-                        //and this one
-                        // this.displayBoard();
-                        console.log("REEEEEE You should always see false in this result: " + res);
-                    })
-                    .catch((err) => {console.log(err)})
-                }
-
-
-                
+    
+                axios.put(`api/ships/${id}`, {posY, posX, moved})
+                .then((res) => {
+                    // grid[posY][posX] = id;
+                    // this.setState({backgroundGrid: grid});
+                    //and this one
+                    // this.displayBoard();
+                    console.log("REEEEEE You should always see false in this result: " + res);
+                })
+                .catch((err) => {console.log(err)})
             }
 
 
+       
+            axios.get('/api/ships')
+            .then((res) => {
+                shipArray = res.data;
+                //Making the enemy ships go down
+                for(let i = 0; i < shipArray.length; i++){
+
+                    let yChange = Math.floor(Math.random() * 6);
+                    
+
+                    let posY = shipArray[i].posY + yChange;
+                    let posX = shipArray[i].posX;
+                    let id = shipArray[i].id;
+                    let moved = false;
+
+                    if(shipArray[i].id > 70){
+                        axios.put(`api/ships/${id}`, {posY, posX, moved})
+                        .then((res) => {
+                            console.log("ENEMY SHIPS MOVED DOWN")
+                        })
+                        .catch((err) => {console.log(err)})
+                    }
+
+                
+
+                }
+            })
+            .catch((err) => console.log(err))
+
+            for(let i = 0; i < shipArray.length; i++){
+                if(shipArray[i].id > 70 && shipArray[i].posY > 26){
+                    this.setState({gameOver: true})
+                }
+            }
+
+            //This will potentially spawn a random enemy fighter 
+
+            let incSubWave = this.state.subwave;
+            let incWave = this.state.wave;
+            incSubWave += 1;
+            if(incSubWave > 5){
+                incWave += 1;
+                incSubWave = 0;
+            }
+
+            for(let i = 0; i < incWave; i++){
+                let posX = Math.floor(Math.random() * 48)
+                let posY = Math.floor(Math.random() * 5)
+                let id = this.state.enemyId;
+
+                axios.post('/api/ships', {posX, posY, id})
+                .then((res) => {
+                    console.log("New fighter added")
+                    id += 1;
+                    this.setState({enemyId: id})
+                    this.setState({wave: incWave})
+                    this.setState({subwave: incSubWave})
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+
+       
+       
+       
+       
+       
         })
         .catch((err) => {
             console.log(err)
         })
 
-        //Here is where all the enemy ships will be moved down
-        for(let i = 0; i < shipArray.length; i ++){
-            if(shipArray[i].id > 70 && shipArray[i].posY > 24){
-                this.setState({gameOver: true})
-            }
-        }
-        
+ 
 
+        //Here is where all the enemy ships
 
-
-
-
-        
+    
 
     }
 
@@ -358,7 +397,7 @@ class Grid extends Component{
 
         console.log("onclick still works")
 
-        let range = 5;
+        let range = 4;
         let right = 49 - posX;
         console.log("The clicked shp is " + right + " tiles away from the right edge")
         let left = posX;
@@ -471,9 +510,17 @@ class Grid extends Component{
 
     addFighter(posX, posY){
 
-        axios.post('/api/ships', {posX, posY})
+        let id = this.state.friendId;
+
+
+        axios.post('/api/ships', {posX, posY, id})
         .then((res) => {
             console.log("New fighter added")
+            id += 1;
+            this.setState({friendId: id});
+            let fighterCost = this.state.money;
+            fighterCost = fighterCost - 10;
+            this.setState({money: fighterCost})
         })
         .catch((err) => {
             console.log(err)
@@ -504,12 +551,15 @@ class Grid extends Component{
             for(let i = 0; i < friendArray.length; i++){
                 if((Math.abs(friendArray[i].posY - posY) < 5) && (Math.abs(friendArray[i].posX - posX) < 5)){
                     console.log("ship would've been destroyed");
-                    axios.delete(`/api/ships/${id - 10}`)
+                    axios.delete(`/api/ships/${id - 30}`)
                     .then((res) => {
                         console.log(id + "was destroyed!");
                         let grid = this.state.backgroundGrid;
                         grid[posY][posX] = 4;
                         this.setState({backgroundGrid: grid})
+                        let earnedMoney = this.state.money;
+                        earnedMoney += 5;
+                        this.setState({money: earnedMoney})
                     })
                     .catch((err) => {
                         console.log(err);
@@ -542,10 +592,11 @@ class Grid extends Component{
                 <div className="grid-game-board">
                     {this.displayBoard()}
                 </div>
-                
+
+                {this.state.gameOver && <div className="big-game-over">Game Over! You destroyed {this.state.money/5} fighters.</div>}
 
                 <div className="side-box">
-                        <Stats shipId={this.state.activeShipId} cleanGrid={this.cleanGrid} addFighter={this.addFighter}/>
+                        <Stats monies={this.state.money} shipId={this.state.activeShipId} cleanGrid={this.cleanGrid} addFighter={this.addFighter}/>
              
                 </div>
             </div>

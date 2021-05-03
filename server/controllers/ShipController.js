@@ -1,43 +1,43 @@
 let ships = [
     {
         id: 21,
-        posX: 13,
-        posY: 15,
+        posX: 40,
+        posY: 23,
         health: 10,
         moved: false
     },
     {
         id: 22,
-        posX: 10,
-        posY: 12,
+        posX: 12,
+        posY: 22,
         health: 10,
         moved: false
     },
     {
         id: 23,
-        posX: 10,
-        posY: 18,
+        posX: 25,
+        posY: 23,
         health: 10,
         moved: false
     },
     {
         id: 71,
-        posX: 33,
-        posY: 11,
+        posX: 5,
+        posY: 5,
         health: 10,
         moved: false
     },
     {
         id: 72,
-        posX: 33,
-        posY: 18,
+        posX: 25,
+        posY: 1,
         health: 10,
         moved: false
     },
     {
         id: 73,
-        posX: 38,
-        posY: 15,
+        posX: 40,
+        posY: 7,
         health: 10,
         moved: false
     }
@@ -63,8 +63,7 @@ module.exports = {
         res.status(200).send(ships);
     },
     addShip: (req, res) => {
-        let id = friendId;
-        const {posX, posY} = req.body;
+        const {posX, posY, id} = req.body;
         const newFighter = {
             id: id,
             posX: posX,

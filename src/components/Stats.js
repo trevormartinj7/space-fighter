@@ -8,12 +8,11 @@ import grit from './grit.png'
 
 class Stats extends Component{
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
-            money: 0,
         }
-
+        this.cleanGridButton = this.cleanGridButton.bind(this)
         this.displayCharacter = this.displayCharacter.bind(this)
     }
 
@@ -26,7 +25,7 @@ class Stats extends Component{
                         <img className="img-portrait" src={eagle} />
                     </div>
                     <h1>Eagle</h1>
-                    <p>"Don't let a single ship past us!"</p>
+                    <p>"We can't let a single ship past us!"</p>
                 </div>
                 
             )
@@ -86,7 +85,12 @@ class Stats extends Component{
 
 
     }
+
+    cleanGridButton(){
+        this.props.cleanGrid();
+    }
     
+
 
     render(){
         console.log(this.props)
@@ -96,9 +100,9 @@ class Stats extends Component{
                 {this.displayCharacter(this.props.shipId)}
 
                 <div className="money-boxy">
-                    Current Money: {this.state.money}
-                    <button onClick={() => this.props.cleanGrid()}>Execute Jump</button>
-                    <button onClick={() => this.props.addFighter(25,28)}>New Fighter</button>     
+                    Current Money: {this.props.monies}
+                    <button onClick={() => this.cleanGridButton()}>Execute Jump</button>
+                    {this.props.monies > 9 && <button onClick={() => this.props.addFighter(25,28)}>New Fighter</button>}    
                 </div>
 
 

@@ -216,3 +216,10 @@
   margin: .5px;
 }
 
+.big-game-over{
+  position: absolute;
+  font-size: xx-large;
+  color: aliceblue;
+  top: 40vh;
+  left: 22vw;
+}
