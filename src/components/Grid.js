@@ -21,6 +21,7 @@ class Grid extends Component{
             friendId: 24,
             enemyId: 74,
             subwave: 1,
+            startgame: false
         }
 
 
@@ -342,7 +343,7 @@ class Grid extends Component{
             let incSubWave = this.state.subwave;
             let incWave = this.state.wave;
             incSubWave += 1;
-            if(incSubWave > 5){
+            if(incSubWave > 40){
                 incWave += 1;
                 incSubWave = 0;
             }
@@ -363,6 +364,7 @@ class Grid extends Component{
                 .catch((err) => {
                     console.log(err)
                 })
+                
             }
 
        
@@ -521,6 +523,9 @@ class Grid extends Component{
             let fighterCost = this.state.money;
             fighterCost = fighterCost - 10;
             this.setState({money: fighterCost})
+            this.cleanGrid();
+            this.displayBoard();
+
         })
         .catch((err) => {
             console.log(err)
@@ -583,6 +588,10 @@ class Grid extends Component{
         //We got a couple of ways to do this. We can check each friendly fighter
     }
 
+    startGame(){
+        this.setState({startgame: true})
+    }
+
     render(){
 
 
@@ -597,7 +606,6 @@ class Grid extends Component{
 
                 <div className="side-box">
                         <Stats monies={this.state.money} shipId={this.state.activeShipId} cleanGrid={this.cleanGrid} addFighter={this.addFighter}/>
-             
                 </div>
             </div>
             

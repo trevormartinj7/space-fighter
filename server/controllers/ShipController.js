@@ -1,6 +1,6 @@
 let ships = [
     {
-        id: 21,
+        id: 23,
         posX: 40,
         posY: 23,
         health: 10,
@@ -14,7 +14,7 @@ let ships = [
         moved: false
     },
     {
-        id: 23,
+        id: 21,
         posX: 25,
         posY: 23,
         health: 10,

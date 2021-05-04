@@ -36,7 +36,7 @@ class Stats extends Component{
                         <img className="img-portrait" src={hawke} />
                     </div>
                     <h1>Hawke</h1>
-                    <p>"We have to think through our moves carefully"</p>
+                    <p>"Their speed is pathetic"</p>
                 </div>
                 
             )
@@ -99,10 +99,17 @@ class Stats extends Component{
                 
                 {this.displayCharacter(this.props.shipId)}
 
-                <div className="money-boxy">
-                    Current Money: {this.props.monies}
-                    <button onClick={() => this.cleanGridButton()}>Execute Jump</button>
-                    {this.props.monies > 9 && <button onClick={() => this.props.addFighter(25,28)}>New Fighter</button>}    
+                <div className="money-box">
+                    
+                    
+                    {/* <div className="money-track"> */}
+                        <button><h1>Money: $ {this.props.monies} </h1></button>
+                    {/* </div> */}
+                    
+                    <button className="execute" onClick={() => this.cleanGridButton()}><h1>Execute Jump</h1></button>
+                    {this.props.monies > 9 && <button onClick={() => this.props.addFighter(25,28)}><h1>Launch New Fighter ($10)</h1></button>}    
+                
+                
                 </div>
 
 

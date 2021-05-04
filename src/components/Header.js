@@ -9,11 +9,11 @@ class Header extends Component{
 
 
         return(
-            <div className="header">
+            <header className="header">
                 <div></div>
                 <div className="center-title">Nautilus Space Fighter</div>
                 <div className="login">Login</div>
-            </div>
+            </header>
             
         )
     }

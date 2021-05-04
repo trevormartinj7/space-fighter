@@ -102,14 +102,14 @@
 }
 
 .opening-box{
-  background-color: darkgrey;
+  background-color: #4f738e;
   height: 40%;
   width: 100%;
   font-family: 'Karantina', cursive;
 }
 
 .character-box{
-  background-color: darkgrey;
+  background-color: #4f738e;
   height: 40%;
   width: 100%;
   object-fit: none;
@@ -139,6 +139,23 @@
   height: 95%;
   width: auto;
 }
+
+.money-box{
+  display: flex;
+  flex-direction: column;
+  background-color: #867466;
+  height: 60%;
+
+}
+
+.money-track{
+  display: flex;
+  justify-content: left;
+  margin-left: 10px;
+
+}
+
+
 
 
 .empty{
